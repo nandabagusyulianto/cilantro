@@ -1,0 +1,44 @@
+{
+  "name": "cilantro",
+  "version": "1.0.0",
+  "description": "Lightweight Steam hour booster",
+  "author": "klynglabs",
+  "license": "MIT",
+  "repository": "klynglabs/cilantro",
+  "keywords": [
+    "steam",
+    "steam-idler",
+    "hour-booster",
+    "idle",
+    "idler",
+    "farming",
+    "playtime",
+    "hours",
+    "games",
+    "bun"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build --target=bun --minify --packages=external --outfile=build/index.js src/index.ts",
+    "start": "bun build/index.js",
+    "format": "bunx prettier . --write"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "p-retry": "^6.2.1",
+    "pkg-dir": "^8.0.0",
+    "steam-user": "^5.3.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@tsconfig/bun": "^1.0.10",
+    "@types/bun": "^1.3.7",
+    "@types/steam-user": "5.1.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
