@@ -1,13 +1,15 @@
 import { Bot } from '@/bot'
 import { config } from '@/config'
 
-for (const account of config.accounts) {
-  const bot = new Bot({
-    username: account.username,
-    password: account.password,
-    online: account.online,
-    games: account.games,
-  })
+const bots = await Promise.all(
+  config.accounts.map(async (acc) => {
+    const bot = new Bot(acc)
+    await bot.start()
+    return bot
+  }),
+)
 
-  await bot.login()
-}
+process.on('SIGINT', async () => {
+  await Promise.all(bots.map((b) => b.stop()))
+  process.exit(0)
+})

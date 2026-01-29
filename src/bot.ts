@@ -11,27 +11,18 @@ import { TokenStorage } from '@/utils/tokens'
 export interface BotOptions {
   username: string
   password: string
-  games: number[]
+  games: readonly number[]
   online?: boolean
 }
 
 export class Bot {
   private readonly tokens = new TokenStorage()
   private readonly logger: Logger
-
-  private readonly username: string
-  private readonly password: string
-  private readonly games: number[]
-  private readonly online: boolean
   private readonly steam: Steam
+  private isBlocked = false
 
-  private blocked = false
-
-  constructor({ username, password, games, online = false }: BotOptions) {
-    this.username = username.toLowerCase()
-    this.password = password
-    this.games = games
-    this.online = online
+  constructor(private readonly options: BotOptions) {
+    this.logger = new Logger(options.username.toLowerCase())
 
     this.steam = new Steam({
       autoRelogin: false,
@@ -39,48 +30,13 @@ export class Bot {
       protocol: EConnectionProtocol.TCP,
     })
 
-    this.logger = new Logger(this.username)
-
-    this.steam.on('error', (error) => {
-      switch (error.message) {
-        case 'LoggedInElsewhere':
-          this.logger.error('Logged in from another client')
-          break
-        case 'LogonSessionReplaced':
-          this.logger.warn('Session replaced by another instance')
-          process.exit(0)
-        default:
-          this.logger.error(error.message)
-      }
-
-      void this.handleError()
-    })
-
-    this.steam.on('playingState', (blocked, appId) => {
-      this.blocked = blocked
-      if (!blocked && appId !== 0) return
-      this.play()
-    })
-
-    this.steam.on('steamGuard', async (_, callback) => {
-      this.logger.warn('Enter Steam Guard code')
-      for await (const line of console) {
-        if (!line) process.exit(1)
-        callback(line)
-        console.clear()
-        break
-      }
-    })
-
-    this.steam.on('refreshToken', (token) =>
-      this.tokens.set(this.username, token),
-    )
+    this.bindEvents()
   }
 
-  async login(): Promise<void> {
+  async start(): Promise<void> {
     this.logger.log('Logging in...')
+    this.steam.logOn(await this.getCredentials())
 
-    this.steam.logOn(await this.getLoginDetails())
     await Promise.race([
       once(this.steam, 'loggedOn'),
       once(this.steam, 'error').then(([err]) => {
@@ -88,16 +44,53 @@ export class Bot {
       }),
     ])
 
-    if (this.online) this.steam.setPersona(Steam.EPersonaState.Online)
+    if (this.options.online) this.steam.setPersona(Steam.EPersonaState.Online)
   }
 
-  private async logout(): Promise<void> {
+  async stop(): Promise<void> {
+    if (!this.steam.steamID) return
+
     this.steam.logOff()
     await once(this.steam, 'disconnected')
   }
 
-  private async getLoginDetails(): Promise<Parameters<Steam['logOn']>[0]> {
-    const token = await this.tokens.get(this.username)
+  private bindEvents(): void {
+    this.steam.on('error', (err) => this.handleError(err))
+    this.steam.on('playingState', (blocked, appId) => {
+      this.isBlocked = blocked
+      if (!blocked && appId !== 0) return
+      this.syncGames()
+    })
+    this.steam.on('steamGuard', async (_, callback) => {
+      this.logger.warn('Enter Steam Guard code')
+      for await (const line of console) {
+        const code = line?.trim()
+        if (!code) process.exit(1)
+        callback(code)
+        break
+      }
+    })
+    this.steam.on('refreshToken', (token) =>
+      this.tokens.set(this.options.username, token),
+    )
+  }
+
+  private async login(): Promise<void> {
+    this.logger.log('Logging in...')
+    this.steam.logOn(await this.getCredentials())
+
+    await Promise.race([
+      once(this.steam, 'loggedOn'),
+      once(this.steam, 'error').then(([err]) => {
+        throw err
+      }),
+    ])
+
+    if (this.options.online) this.steam.setPersona(Steam.EPersonaState.Online)
+  }
+
+  private async getCredentials(): Promise<Parameters<Steam['logOn']>[0]> {
+    const token = await this.tokens.get(this.options.username)
     if (token) {
       return {
         refreshToken: token,
@@ -105,30 +98,53 @@ export class Bot {
       } as Steam.LogOnDetailsRefresh
     }
     return {
-      accountName: this.username,
-      password: this.password,
+      accountName: this.options.username,
+      password: this.options.password,
       renewRefreshTokens: true,
     } as Steam.LogOnDetailsNamePass
   }
 
-  private play(): void {
-    if (this.blocked) {
-      return this.steam.gamesPlayed([])
-    }
-
-    this.steam.gamesPlayed(this.games)
-    this.logger.log(`Playing ${this.games.length} game(s)`)
+  private syncGames(): void {
+    this.steam.gamesPlayed(this.isBlocked ? [] : [...this.options.games])
+    if (!this.isBlocked)
+      this.logger.log(`Playing ${this.options.games.length} game(s)`)
   }
 
-  private async handleError(): Promise<void> {
+  private handleError(error: Error): void {
+    switch (error.message) {
+      case 'LogonSessionReplaced':
+        this.logger.error('Session replaced by another instance')
+        return process.exit(1)
+
+      case 'InvalidPassword':
+        this.logger.error('Invalid credentials')
+        return process.exit(1) // Avoid rate-limit
+
+      case 'LoggedInElsewhere':
+        this.logger.warn('Logged in from another client')
+        break
+
+      case 'NoConnection':
+        this.logger.error('Connection dropped')
+        break
+
+      default:
+        this.logger.error(error.message)
+    }
+
+    void this.reconnect()
+  }
+
+  private async reconnect(): Promise<void> {
     try {
-      await this.logout()
+      await this.stop()
+
       await withRetry(() => this.login(), {
         attempts: 10,
-        delayMs: 1e4,
+        delayMs: 10_000,
         factor: 2,
         onRetry: (i, delay) =>
-          this.logger.warn(`Retry ${i}/10 in ${delay / 1e3}s...`),
+          this.logger.warn(`Retry ${i}/10 in ${delay / 1_000}s...`),
       })
     } catch {
       this.logger.error('Failed to reconnect')

@@ -5,10 +5,10 @@ import chalk from 'chalk'
 type Level = 'debug' | 'log' | 'warn' | 'error'
 
 const levels: Record<Level, ChalkInstance> = {
-  debug: chalk.magenta,
-  log: chalk.white,
-  warn: chalk.yellow,
-  error: chalk.red,
+  debug: chalk.magentaBright,
+  log: chalk.blueBright,
+  warn: chalk.yellowBright,
+  error: chalk.redBright,
 }
 
 function stringToColor(str: string): ChalkInstance {
@@ -64,10 +64,12 @@ export class Logger {
   private print(level: Level, msg: unknown, ...args: unknown[]): void {
     const color = levels[level]
     const time = chalk.dim(new Date().toLocaleTimeString('en-US'))
+    const levelLabel = color(level.toUpperCase().padEnd(5))
     const app = chalk.greenBright('[Cilantro]')
     const ctx =
       this.context && this.color ? this.color(`[${this.context}]`) : ''
     const text = color([msg, ...args].map(format).join(' '))
-    console.log([app, time, ctx, text].filter(Boolean).join(' '))
+
+    console.log([app, time, levelLabel, ctx, text].filter(Boolean).join(' '))
   }
 }
